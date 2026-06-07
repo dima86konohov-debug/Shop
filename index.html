@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Магазин Обуви</title>
-    <!-- Подключаем официальный скрипт Telegram WebApp API -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,7 +11,6 @@
     <div class="container">
         <h2>Каталог обуви</h2>
         
-        <!-- Карточка товара -->
         <div class="shoe-card" id="product-1">
             <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" alt="Кроссовки" class="shoe-img">
             <div class="shoe-info">
@@ -24,7 +22,6 @@
                     <button class="size-btn" onclick="selectSize(this, 40)">40</button>
                     <button class="size-btn" onclick="selectSize(this, 41)">41</button>
                     <button class="size-btn" onclick="selectSize(this, 42)">42</button>
-                    <!-- Пример отсутствующего размера -->
                     <button class="size-btn disabled" disabled>43</button> 
                     <button class="size-btn" onclick="selectSize(this, 44)">44</button>
                 </div>
@@ -66,11 +63,15 @@
                 size: selectedSize
             };
 
-            // ОТПРАВЛЯЕМ ДАННЫЕ (Исправлено JSON с большой буквы)
+            // Проверочное окно. Если вы его увидите в Telegram — значит код точно обновился!
+            alert("Отправка заказа боту: " + JSON.stringify(data));
+
+            // Отправляем данные обратно боту в Telegram (JSON с большой буквы!)
             tg.sendData(JSON.stringify(data));
-            tg.close(); // Закрываем Mini App после отправки
+            
+            // Закрываем Mini App
+            tg.close(); 
         }
     </script>
-
 </body>
 </html>
