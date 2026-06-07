@@ -56,21 +56,17 @@
                 return;
             }
 
-            // Формируем данные заказа
-            const data = {
-                item: productInfo.item,
-                price: productInfo.price,
-                size: selectedSize
-            };
-
-            // Проверочное окно. Если вы его увидите в Telegram — значит код точно обновился!
-            alert("Отправка заказа боту: " + JSON.stringify(data));
-
-            // Отправляем данные обратно боту в Telegram (JSON с большой буквы!)
-            tg.sendData(JSON.stringify(data));
+            // Формируем красивый текст заказа
+            const orderText = `👟 Заказ: ${productInfo.item}\n📏 Размер: ${selectedSize}\n💰 Цена: ${productInfo.price} BYN`;
             
-            // Закрываем Mini App
-            tg.close(); 
+            // Юзернейм вашего бота (уже подставлен правильно)
+            const botUsername = "shoe_shop_2026_bot"; 
+
+            // Кодируем текст для безопасной передачи в ссылке
+            const encodedText = encodeURIComponent(orderText);
+            
+            // Перенаправляем пользователя в диалог с ботом, передавая готовое сообщение
+            window.location.href = `https://t.me/${botUsername}?text=${encodedText}`;
         }
     </script>
 </body>
