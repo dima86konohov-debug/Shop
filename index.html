@@ -22,53 +22,44 @@
                     <button class="size-btn" onclick="selectSize(this, 40)">40</button>
                     <button class="size-btn" onclick="selectSize(this, 41)">41</button>
                     <button class="size-btn" onclick="selectSize(this, 42)">42</button>
-                    <button class="size-btn disabled" disabled>43</button> 
                     <button class="size-btn" onclick="selectSize(this, 44)">44</button>
                 </div>
             </div>
         </div>
-
-        <button class="order-btn" id="main-action-btn" onclick="sendOrder()">Оформить заказ</button>
-    </div>
+        </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand(); 
 
         let selectedSize = null;
-        const productInfo = {
-            item: "Спортивные кроссовки RunFast",
-            price: 180
-        };
+
+        // 1. Показываем системную кнопку Telegram в самом низу экрана
+        tg.MainButton.text = "ВЫБЕРИТЕ РАЗМЕР";
+        tg.MainButton.show();
+        tg.MainButton.disable(); // Отключаем её, пока размер не выбран
 
         function selectSize(element, size) {
             document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             selectedSize = size;
+
+            // 2. Включаем системную кнопку, когда размер выбран
+            tg.MainButton.text = `ОФОРМИТЬ ЗАКАЗ (Размер ${size})`;
+            tg.MainButton.enable();
         }
 
-        function sendOrder() {
-            if (!selectedSize) {
-                alert("Пожалуйста, выберите размер обуви перед заказом!");
-                return;
-            }
-
-            // Формируем ТОЧНЫЙ ТЕКСТ, который ждет ваш Python-код в newfile.py
-            const orderText = `Заказ в магазине:\n📦 Модель: ${productInfo.item}\n📏 Размер: ${selectedSize}\n💰 Цена: ${productInfo.price} BYN`;
+        // 3. Отправка данных при нажатии на системную кнопку
+        tg.MainButton.onClick(function() {
+            const data = {
+                item: "Спортивные кроссовки RunFast",
+                price: 180,
+                size: selectedSize
+            };
             
-            // Ваш точный юзернейм бота
-            const botUsername = "shoe_shop_2026_bot"; 
-
-            // Безопасно кодируем текст для ссылки
-            const encodedText = encodeURIComponent(orderText);
-            
-            // Формируем ссылку перехода в чат с текстом
-            const targetUrl = `https://t.me/${botUsername}?text=${encodedText}`;
-
-            // Открываем ссылку средствами Telegram. 
-            // Это закроет магазин и вставит готовый текст заказа в поле ввода чата бота!
-            tg.openTelegramLink(targetUrl);
-        }
+            tg.sendData(JSON.stringify(data));
+            tg.close();
+        });
     </script>
 </body>
 </html>
