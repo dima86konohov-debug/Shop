@@ -26,40 +26,44 @@
                 </div>
             </div>
         </div>
-        </div>
+
+        <button class="order-btn" id="main-action-btn" onclick="sendOrder()">Оформить заказ</button>
+    </div>
 
     <script>
+        // Инициализируем Telegram WebApp
         const tg = window.Telegram.WebApp;
         tg.expand(); 
 
         let selectedSize = null;
-
-        // 1. Показываем системную кнопку Telegram в самом низу экрана
-        tg.MainButton.text = "ВЫБЕРИТЕ РАЗМЕР";
-        tg.MainButton.show();
-        tg.MainButton.disable(); // Отключаем её, пока размер не выбран
+        const productInfo = {
+            item: "Спортивные кроссовки RunFast",
+            price: 180
+        };
 
         function selectSize(element, size) {
             document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             selectedSize = size;
-
-            // 2. Включаем системную кнопку, когда размер выбран
-            tg.MainButton.text = `ОФОРМИТЬ ЗАКАЗ (Размер ${size})`;
-            tg.MainButton.enable();
         }
 
-        // 3. Отправка данных при нажатии на системную кнопку
-        tg.MainButton.onClick(function() {
+        function sendOrder() {
+            if (!selectedSize) {
+                alert("Пожалуйста, выберите размер обуви перед заказом!");
+                return;
+            }
+
+            // Формируем чистые JSON данные заказа
             const data = {
-                item: "Спортивные кроссовки RunFast",
-                price: 180,
+                item: productInfo.item,
+                price: productInfo.price,
                 size: selectedSize
             };
-            
+
+            // Отправляем данные напрямую в бот и закрываем окно
             tg.sendData(JSON.stringify(data));
-            tg.close();
-        });
+            tg.close(); 
+        }
     </script>
 </body>
 </html>
