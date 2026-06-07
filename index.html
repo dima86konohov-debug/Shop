@@ -54,17 +54,18 @@
                 return;
             }
 
-            // Формируем красивый текст заказа
-            const orderText = `👟 Заказ: ${productInfo.item}\n📏 Размер: ${selectedSize}\n💰 Цена: ${productInfo.price} BYN`;
+            // Формируем данные заказа
+            const data = {
+                item: productInfo.item,
+                price: productInfo.price,
+                size: selectedSize
+            };
+
+            // Отправляем JSON-данные напрямую в бот (JSON с большой буквы)
+            tg.sendData(JSON.stringify(data));
             
-            // ТАКЖЕ ИСПРАВЛЕНО: Точный юзернейм вашего бота со скриншота!
-            const botUsername = "shoe_shop_2026_bot"; 
-
-            const encodedText = encodeURIComponent(orderText);
-            const targetUrl = `https://t.me/${botUsername}?text=${encodedText}`;
-
-            // Принудительный переход по ссылке через системный метод Telegram
-            tg.openTelegramLink(targetUrl);
+            // Закрываем Mini App
+            tg.close(); 
         }
     </script>
 </body>
