@@ -53,19 +53,20 @@
                 return;
             }
 
-            // Формируем понятный текст заказа, который прилетит в чат
-            const orderText = `👟 Заказ в магазине:\n📦 Модель: ${productInfo.item}\n📏 Размер: ${selectedSize}\n💰 Цена: ${productInfo.price} BYN`;
+            // Формируем ТОЧНЫЙ ТЕКСТ, который ждет ваш Python-код в newfile.py
+            const orderText = `Заказ в магазине:\n📦 Модель: ${productInfo.item}\n📏 Размер: ${selectedSize}\n💰 Цена: ${productInfo.price} BYN`;
             
-            // Твой точный юзернейм бота со скриншота 13388.jpg
+            // Ваш точный юзернейм бота
             const botUsername = "shoe_shop_2026_bot"; 
 
-            // Кодируем пробелы и символы для ссылки
+            // Безопасно кодируем текст для ссылки
             const encodedText = encodeURIComponent(orderText);
             
-            // Специальная ссылка, которая открывает чат и вставляет текст
+            // Формируем ссылку перехода в чат с текстом
             const targetUrl = `https://t.me/${botUsername}?text=${encodedText}`;
 
-            // Вызываем принудительный переход силами самого Telegram
+            // Открываем ссылку средствами Telegram. 
+            // Это закроет магазин и вставит готовый текст заказа в поле ввода чата бота!
             tg.openTelegramLink(targetUrl);
         }
     </script>
