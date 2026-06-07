@@ -10,7 +10,7 @@
     "id": 2,
     "title": "Спортивные кроссовки Puma",
     "price": 150,
-    "image": "https://i.postimg.cc/MpOvTvj5/orig-1.webp",
+    "image": "orig-1.webp", 
     "sizes": [40, 41, 42, 44]
   },
   {
