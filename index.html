@@ -43,9 +43,7 @@
         };
 
         function selectSize(element, size) {
-            // Снимаем выделение со всех кнопок
             document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
-            // Добавляем активный класс текущей
             element.classList.add('active');
             selectedSize = size;
         }
@@ -59,14 +57,14 @@
             // Формируем красивый текст заказа
             const orderText = `👟 Заказ: ${productInfo.item}\n📏 Размер: ${selectedSize}\n💰 Цена: ${productInfo.price} BYN`;
             
-            // Юзернейм вашего бота (уже подставлен правильно)
+            // ТАКЖЕ ИСПРАВЛЕНО: Точный юзернейм вашего бота со скриншота!
             const botUsername = "shoe_shop_2026_bot"; 
 
-            // Кодируем текст для безопасной передачи в ссылке
             const encodedText = encodeURIComponent(orderText);
-            
-            // Перенаправляем пользователя в диалог с ботом, передавая готовое сообщение
-            window.location.href = `https://t.me/${botUsername}?text=${encodedText}`;
+            const targetUrl = `https://t.me/${botUsername}?text=${encodedText}`;
+
+            // Принудительный переход по ссылке через системный метод Telegram
+            tg.openTelegramLink(targetUrl);
         }
     </script>
 </body>
