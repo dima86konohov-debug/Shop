@@ -66,10 +66,11 @@
                 size: selectedSize
             };
 
-            // Отправляем данные обратно боту в Telegram
-            tg.sendData(json.stringify(data));
+            // ОТПРАВЛЯЕМ ДАННЫЕ (Исправлено JSON с большой буквы)
+            tg.sendData(JSON.stringify(data));
             tg.close(); // Закрываем Mini App после отправки
         }
     </script>
+
 </body>
 </html>
