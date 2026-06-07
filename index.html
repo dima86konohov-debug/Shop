@@ -11,7 +11,11 @@
     <div class="container">
         <h2>Каталог обуви</h2>
         
+        <!-- Сюда товары подгружаются из JSON автоматически -->
         <div id="catalog"></div>
+
+        <!-- Кнопка оформления заказа -->
+        <button class="order-btn" id="main-action-btn" onclick="sendOrder()">Оформить заказ</button>
     </div>
 
     <script>
@@ -21,16 +25,15 @@
         let selectedSize = null;
         let selectedProduct = null;
 
-        // Функция автоматической отрисовки карточек на экране
+        // Генерация карточек товаров на экране
         function renderCatalog(products) {
             const catalogDiv = document.getElementById('catalog');
-            catalogDiv.innerHTML = ''; // Очищаем
+            catalogDiv.innerHTML = ''; 
 
             products.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'shoe-card';
                 
-                // Генерируем кнопки размеров
                 let sizeButtons = '';
                 product.sizes.forEach(size => {
                     sizeButtons += `<button class="size-btn" onclick="selectSize(this, ${size}, '${product.title}', ${product.price})">${size}</button>`;
@@ -73,8 +76,7 @@
             tg.close(); 
         }
 
-        // ЗАГРУЗКА ТОВАРОВ: Сайт сам берет их из файла products.json
-        // Добавляем случайный макрос ?t=, чтобы обойти кэш при обновлении json
+        // Загрузка актуального списка товаров с защитой от кэширования
         fetch(`products.json?t=${Date.now()}`)
             .then(response => response.json())
             .then(data => renderCatalog(data))
