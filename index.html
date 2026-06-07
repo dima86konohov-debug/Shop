@@ -11,10 +11,8 @@
     <div class="container">
         <h2>Каталог обуви</h2>
         
-        <!-- Сюда товары подгружаются из JSON автоматически -->
         <div id="catalog"></div>
 
-        <!-- Кнопка оформления заказа -->
         <button class="order-btn" id="main-action-btn" onclick="sendOrder()">Оформить заказ</button>
     </div>
 
@@ -30,17 +28,24 @@
             const catalogDiv = document.getElementById('catalog');
             catalogDiv.innerHTML = ''; 
 
+            if (!products || products.length === 0) {
+                catalogDiv.innerHTML = '<p style="color: red; text-align: center;">Товары не найдены или ошибка загрузки</p>';
+                return;
+            }
+
             products.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'shoe-card';
                 
                 let sizeButtons = '';
                 product.sizes.forEach(size => {
-                    sizeButtons += `<button class="size-btn" onclick="selectSize(this, ${size}, '${product.title}', ${product.price})">${size}</button>`;
+                    // Используем JSON.stringify, чтобы безопасно передать имя товара без конфликта кавычек
+                    const safeTitle = product.title.replace(/"/g, '&quot;');
+                    sizeButtons += `<button class="size-btn" onclick="selectSize(this, ${size}, '${safeTitle}', ${product.price})">${size}</button>`;
                 });
 
                 card.innerHTML = `
-                    <img src="${product.image}" alt="${product.title}" class="shoe-img">
+                    <img src="${product.image}" alt="${product.title}" class="shoe-img" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'">
                     <div class="shoe-info">
                         <h3 class="shoe-title">${product.title}</h3>
                         <p class="shoe-price">${product.price} BYN</p>
@@ -53,7 +58,9 @@
         }
 
         function selectSize(element, size, title, price) {
+            // Снимаем активность со всех кнопок размеров на странице
             document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            // Делаем активной текущую кнопку
             element.classList.add('active');
             
             selectedSize = size;
@@ -68,19 +75,27 @@
 
             const data = {
                 item: selectedProduct.item,
-                price: selectedProduct.price,
-                size: selectedSize
+                price: Number(selectedProduct.price),
+                size: Number(selectedSize)
             };
 
             tg.sendData(JSON.stringify(data));
             tg.close(); 
         }
 
-        // Загрузка актуального списка товаров с защитой от кэширования
+        // Загрузка актуального списка товаров с защитой от кэширования браузера
         fetch(`products.json?t=${Date.now()}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Сеть ответила с ошибкой: ' + response.status);
+                }
+                return response.json();
+            })
             .then(data => renderCatalog(data))
-            .catch(err => console.error("Ошибка загрузки товаров:", err));
+            .catch(err => {
+                console.error("Ошибка загрузки товаров:", err);
+                document.getElementById('catalog').innerHTML = '<p style="color: red; text-align: center;">Ошибка при чтении products.json</p>';
+            });
     </script>
 </body>
 </html>
