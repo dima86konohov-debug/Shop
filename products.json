@@ -8,6 +8,13 @@
   },
   {
     "id": 2,
+    "title": "Спортивные кроссовки Puma",
+    "price": 150,
+    "image": "https://ibb.co/N2nJRJZx" 
+    "sizes": [40, 41, 42, 44]
+  },
+  {
+    "id": 3,
     "title": "Зимние ботинки Timber",
     "price": 240,
     "image": "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=400",
