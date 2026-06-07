@@ -32,9 +32,8 @@
     </div>
 
     <script>
-        // Инициализируем Telegram WebApp
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Расширяем приложение на весь экран
+        tg.expand(); 
 
         let selectedSize = null;
         const productInfo = {
@@ -54,18 +53,20 @@
                 return;
             }
 
-            // Формируем данные заказа
-            const data = {
-                item: productInfo.item,
-                price: productInfo.price,
-                size: selectedSize
-            };
-
-            // Отправляем JSON-данные напрямую в бот (JSON с большой буквы)
-            tg.sendData(JSON.stringify(data));
+            // Формируем понятный текст заказа, который прилетит в чат
+            const orderText = `👟 Заказ в магазине:\n📦 Модель: ${productInfo.item}\n📏 Размер: ${selectedSize}\n💰 Цена: ${productInfo.price} BYN`;
             
-            // Закрываем Mini App
-            tg.close(); 
+            // Твой точный юзернейм бота со скриншота 13388.jpg
+            const botUsername = "shoe_shop_2026_bot"; 
+
+            // Кодируем пробелы и символы для ссылки
+            const encodedText = encodeURIComponent(orderText);
+            
+            // Специальная ссылка, которая открывает чат и вставляет текст
+            const targetUrl = `https://t.me/${botUsername}?text=${encodedText}`;
+
+            // Вызываем принудительный переход силами самого Telegram
+            tg.openTelegramLink(targetUrl);
         }
     </script>
 </body>
